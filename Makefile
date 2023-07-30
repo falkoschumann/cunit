@@ -1,9 +1,10 @@
+VERSION = 1.0.0
 SRC_DIR = src
 MAIN_FILE = main.c
 BUILD_DIR = build
 BIN_DIR = $(BUILD_DIR)
 OBJ_DIR = $(BUILD_DIR)/obj
-HEADERS_DIR = $(BUILD_DIR)/include
+DIST_DIR = $(BUILD_DIR)/dist
 HEADERS = $(wildcard $(SRC_DIR)/*.h)
 SOURCES = $(filter-out $(SRC_DIR)/$(MAIN_FILE), $(wildcard $(SRC_DIR)/*.c))
 OBJECTS = $(patsubst %.c,$(OBJ_DIR)/%.o,$(notdir $(SOURCES)))
@@ -23,13 +24,13 @@ LFLAGS = -lm
 # Enable debugging
 #CFLAGS += -g
 
-build: compile resources test run check
+build: compile resources test run check dist
 
 run: compile
 	$(APP_FILE)
 
 resources:
-	cp $(HEADERS) $(HEADERS_DIR)
+	cp $(HEADERS) $(LIB_FILE) README.md LICENSE.txt $(DIST_DIR)
 
 clean:
 	rm -rf $(BUILD_DIR)
@@ -45,11 +46,14 @@ check:
 format:
 	clang-format -i --style=file --fallback-style=Google $(SRC_DIR)/* $(TEST_DIR)/*
 
+dist: compile resources
+	tar czf build/cunit-$(VERSION).tar.gz --directory=$(DIST_DIR) .
+
 prepare:
 	mkdir -p $(BIN_DIR)
 	mkdir -p $(OBJ_DIR)
-	mkdir -p $(HEADERS_DIR)
 	mkdir -p $(TEST_OBJ_DIR)
+	mkdir -p $(DIST_DIR)
 
 $(LIB_FILE): $(OBJECTS) $(MAIN_OBJECT)
 	ar rcs $@ $^
