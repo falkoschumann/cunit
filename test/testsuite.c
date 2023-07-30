@@ -52,12 +52,11 @@ void run_failing(void) {
 
 int main(void) {
   int ok, expected_failure_count;
-  testcase_t successful = {"Successful test case", run_successful};
-  testcase_t failing = {"Failing test case", run_failing};
 
   expected_failure_count = 1;
-  run_testcase(successful);
-  run_testcase(failing);
+  add_testcase("Successful test case", run_successful);
+  add_testcase("Failing test case", run_failing);
+  run_tests();
   print_summary();
   ok = get_failure_count() - expected_failure_count;
 

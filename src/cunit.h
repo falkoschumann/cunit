@@ -14,12 +14,13 @@
 
 typedef void (*test_function_t)(void);
 
-typedef struct testcase_t {
-  const char *name;
-  test_function_t function;
-} testcase_t;
+void add_testcase(const char *name, test_function_t function);
 
-void run_testcase(testcase_t testcase);
+void run_tests(void);
+
+int get_failure_count(void);
+
+void print_summary(void);
 
 #define ASSERT_TRUE(value)                                            \
   {                                                                   \
@@ -100,10 +101,6 @@ void run_testcase(testcase_t testcase);
         ((const void *)(expected) != (const void *)(actual)), \
         ("expected: not same pointer"), __FILE__, __LINE__);  \
   }
-
-int get_failure_count(void);
-
-void print_summary(void);
 
 void assert_implementation(int condition, const char *message, const char *file,
                            unsigned int line);
