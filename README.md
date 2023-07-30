@@ -1,3 +1,5 @@
+[![Build](https://github.com/falkoschumann/cunit/actions/workflows/build.yml/badge.svg)](https://github.com/falkoschumann/cunit/actions/workflows/build.yml)
+
 # CUnit
 
 A simple unit test framework for the C language.
