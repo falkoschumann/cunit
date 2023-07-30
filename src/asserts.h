@@ -1,3 +1,11 @@
+/*
+ * CUnit
+ *
+ * Copyright (c) 2023 by Falko Schumann <falko.schumann@muspellheim.de>
+ * All rights reserved
+ * Released under the terms of the MIT License.
+ */
+
 #ifndef ASSERTS_H
 #define ASSERTS_H
 

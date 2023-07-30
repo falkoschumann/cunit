@@ -1,3 +1,11 @@
+/*
+ * CUnit
+ *
+ * Copyright (c) 2023 by Falko Schumann <falko.schumann@muspellheim.de>
+ * All rights reserved
+ * Released under the terms of the MIT License.
+ */
+
 #include "../src/asserts.h"
 
 static unsigned int expected_failures = 0;

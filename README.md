@@ -1,6 +1,6 @@
 # CUnit
 
-Project description
+A simple unit test framework for the C language.
 
 ## Installation
 
@@ -10,8 +10,4 @@ Project description
 
 ## License
 
-Project license
-
-## Credits
-
-Licenses of dependencies
+Released under the terms of the MIT License.
