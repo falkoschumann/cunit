@@ -55,7 +55,7 @@ prepare:
 	mkdir -p $(TEST_OBJ_DIR)
 	mkdir -p $(DIST_DIR)
 
-$(LIB_FILE): $(OBJECTS) $(MAIN_OBJECT)
+$(LIB_FILE): $(OBJECTS)
 	ar rcs $@ $^
 
 $(APP_FILE): $(LIB_FILE) $(MAIN_OBJECT)
