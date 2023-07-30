@@ -8,12 +8,9 @@
 
 #include <assert.h>
 
-#include "../src/asserts.h"
+#include "../src/cunit.h"
 
 void run_successful(void) {
-  unsigned int expected_failures = 0;
-  unsigned int failure_count;
-
   char *pointer = "foo";
   char *same_pointer = pointer;
   char *other_pointer = "bar";
@@ -31,62 +28,38 @@ void run_successful(void) {
   ASSERT_NOT_NULL(pointer);
   ASSERT_SAME(pointer, same_pointer);
   ASSERT_NOT_SAME(pointer, other_pointer);
-
-  failure_count = print_summary();
-  assert(failure_count == expected_failures);
 }
 
 void run_failing(void) {
-  unsigned int expected_failures = 0;
-  unsigned int failure_count;
-
   char *pointer = "foo";
   char *same_pointer = pointer;
   char *other_pointer = "bar";
   char *null_pointer = 0;
 
   ASSERT_TRUE(1 == 2);
-  expected_failures++;
-
   ASSERT_FALSE(1 == 1);
-  expected_failures++;
-
   ASSERT_EQUALS(1, 2);
-  expected_failures++;
-
   ASSERT_NOT_EQUALS(1, 1);
-  expected_failures++;
-
   ASSERT_DOUBLE_EQUALS(1.0, 1.1, 0.1);
-  expected_failures++;
-
   ASSERT_DOUBLE_NOT_EQUALS(1.0, 1.05, 0.1);
-  expected_failures++;
-
   ASSERT_STRING_EQUALS("foo", "bar");
-  expected_failures++;
-
   ASSERT_STRING_NOT_EQUALS("foobar", "foobar");
-  expected_failures++;
-
   ASSERT_NULL(pointer);
-  expected_failures++;
-
   ASSERT_NOT_NULL(null_pointer);
-  expected_failures++;
-
   ASSERT_SAME(pointer, other_pointer);
-  expected_failures++;
-
   ASSERT_NOT_SAME(pointer, same_pointer);
-  expected_failures++;
-
-  failure_count = print_summary();
-  assert(failure_count == expected_failures);
 }
 
 int main(void) {
-  run_successful();
-  run_failing();
-  return 0;
+  int ok, expected_failure_count;
+  testcase_t successful = {"Successful test case", run_successful};
+  testcase_t failing = {"Failing test case", run_failing};
+
+  expected_failure_count = 1;
+  run_testcase(successful);
+  run_testcase(failing);
+  print_summary();
+  ok = get_failure_count() - expected_failure_count;
+
+  return ok;
 }

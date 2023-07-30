@@ -12,6 +12,15 @@
 #include <math.h>
 #include <string.h>
 
+typedef void (*test_function_t)(void);
+
+typedef struct testcase_t {
+  const char *name;
+  test_function_t function;
+} testcase_t;
+
+void run_testcase(testcase_t testcase);
+
 #define ASSERT_TRUE(value)                                            \
   {                                                                   \
     assert_implementation((value), ("expected: true but was: false"), \
@@ -92,11 +101,9 @@
         ("expected: not same pointer"), __FILE__, __LINE__);  \
   }
 
-/* Prints a summary of the test suite.
- *
- * Returns the number of failed tests or 0 if all tests pass.
- */
-int print_summary(void);
+int get_failure_count(void);
+
+void print_summary(void);
 
 void assert_implementation(int condition, const char *message, const char *file,
                            unsigned int line);
