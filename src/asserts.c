@@ -6,9 +6,9 @@
  * Released under the terms of the MIT License.
  */
 
-#include <stdio.h>
-
 #include "asserts.h"
+
+#include <stdio.h>
 
 static unsigned int run_count = 0;
 static unsigned int failure_count = 0;
