@@ -6,9 +6,24 @@
  * Released under the terms of the MIT License.
  */
 
-#include <stdio.h>
+#include "cunit.h"
+
+void test_example(void) {
+  int a, b, c;
+
+  a = 1;
+  b = 2;
+
+  c = a + b;
+
+  ASSERT_EQUALS(3, c);
+}
 
 int main(void) {
-  printf("Hello World!\n");
-  return 0;
+  testsuite_t *suite;
+
+  suite = add_testsuite("Example suite");
+  add_testcase(suite, "Example test", test_example);
+  run_tests();
+  return get_failure_count();
 }
