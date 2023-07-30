@@ -7,6 +7,12 @@
                           __FILE__, __LINE__);                        \
   }
 
+/* Prints a summary of the test suite.
+ *
+ * Returns the number of failed tests or 0 if all tests pass.
+ */
+int print_summary(void);
+
 void assert_implementation(int condition, const char *message, const char *file,
                            unsigned int line);
 

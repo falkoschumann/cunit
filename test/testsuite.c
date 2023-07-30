@@ -1,6 +1,21 @@
 #include "../src/asserts.h"
 
-int main(void) {
+static unsigned int expected_failures = 0;
+static unsigned int failure_count;
+
+void run_successful(void) { ASSERT_TRUE(1 == 1); }
+
+void run_failing(void) {
   ASSERT_TRUE(1 == 2);
-  return 0;
+  expected_failures++;
+}
+
+int main(void) {
+  int ok;
+  run_successful();
+  run_failing();
+
+  failure_count = print_summary();
+  ok = failure_count - expected_failures;
+  return ok;
 }
