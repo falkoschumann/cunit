@@ -14,13 +14,30 @@
 
 typedef void (*test_function_t)(void);
 
-void add_testcase(const char *name, test_function_t function);
+typedef struct testcase_t {
+  const char *name;
+  test_function_t function;
+  struct testcase_t *next;
+} testcase_t;
+
+typedef struct testsuite_t {
+  const char *name;
+  struct testcase_t *first_testcase;
+  struct testsuite_t *next;
+} testsuite_t;
+
+testsuite_t *add_testsuite(const char *name);
+
+testcase_t *add_testcase(testsuite_t *testsuite, const char *name,
+                         test_function_t function);
 
 void run_tests(void);
 
 int get_failure_count(void);
 
 void print_summary(void);
+
+void clear_tests(void);
 
 #define ASSERT_TRUE(value)                                            \
   {                                                                   \

@@ -51,14 +51,17 @@ void run_failing(void) {
 }
 
 int main(void) {
+  testsuite_t *suite;
   int ok, expected_failure_count;
 
   expected_failure_count = 1;
-  add_testcase("Successful test case", run_successful);
-  add_testcase("Failing test case", run_failing);
+  suite = add_testsuite("CUnit tests");
+  add_testcase(suite, "Successful test cases", run_successful);
+  add_testcase(suite, "Failing test cases", run_failing);
   run_tests();
   print_summary();
   ok = get_failure_count() - expected_failure_count;
+  clear_tests();
 
   return ok;
 }
