@@ -1,15 +1,14 @@
 VERSION = 1.0.0
 SRC_DIR = src
-MAIN_FILE = main.c
+MAIN_FILE = $(SRC_DIR)/main.c
 BUILD_DIR = build
 BIN_DIR = $(BUILD_DIR)
 OBJ_DIR = $(BUILD_DIR)/obj
 DIST_DIR = $(BUILD_DIR)/dist
 HEADERS = $(wildcard $(SRC_DIR)/*.h)
-SOURCES = $(filter-out $(SRC_DIR)/$(MAIN_FILE), $(wildcard $(SRC_DIR)/*.c))
+SOURCES = $(filter-out $(MAIN_FILE), $(wildcard $(SRC_DIR)/*.c))
 OBJECTS = $(patsubst %.c,$(OBJ_DIR)/%.o,$(notdir $(SOURCES)))
 LIB_FILE = $(BIN_DIR)/cunit.a
-MAIN_OBJECT = $(patsubst %.c,$(OBJ_DIR)/%.o, $(MAIN_FILE))
 APP_FILE = $(BIN_DIR)/example
 TEST_DIR = test
 TEST_OBJ_DIR = $(BUILD_DIR)/test_obj
@@ -58,7 +57,7 @@ prepare:
 $(LIB_FILE): $(OBJECTS)
 	ar rcs $@ $^
 
-$(APP_FILE): $(LIB_FILE) $(MAIN_OBJECT)
+$(APP_FILE): $(MAIN_FILE) $(LIB_FILE)
 	$(CC) $(LFLAGS) -o $@ $^
 
 $(TESTSUITE_FILE): $(LIB_FILE) $(TEST_OBJECTS)
