@@ -35,8 +35,6 @@ void run_tests(void);
 
 int get_failure_count(void);
 
-void print_summary(void);
-
 void clear_tests(void);
 
 #define ASSERT_TRUE(value)                                            \
