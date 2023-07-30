@@ -3,6 +3,8 @@ MAIN_FILE = main.c
 BUILD_DIR = build
 BIN_DIR = $(BUILD_DIR)
 OBJ_DIR = $(BUILD_DIR)/obj
+HEADERS_DIR = $(BUILD_DIR)/include
+HEADERS = $(wildcard $(SRC_DIR)/*.h)
 SOURCES = $(filter-out $(SRC_DIR)/$(MAIN_FILE), $(wildcard $(SRC_DIR)/*.c))
 OBJECTS = $(patsubst %.c,$(OBJ_DIR)/%.o,$(notdir $(SOURCES)))
 LIB_FILE = $(BIN_DIR)/cunit.a
@@ -16,15 +18,18 @@ TESTSUITE_FILE = $(BIN_DIR)/testsuite
 CC = clang
 CXX = clang
 CFLAGS = -ansi -Wpedantic -Wall -Wextra -Werror
-LFLAGS =
+LFLAGS = -lm
 
 # Enable debugging
 #CFLAGS += -g
 
-build: compile test check
+build: compile resources test run check
 
 run: compile
 	$(APP_FILE)
+
+resources:
+	cp $(HEADERS) $(HEADERS_DIR)
 
 clean:
 	rm -rf $(BUILD_DIR)
@@ -43,6 +48,7 @@ format:
 prepare:
 	mkdir -p $(BIN_DIR)
 	mkdir -p $(OBJ_DIR)
+	mkdir -p $(HEADERS_DIR)
 	mkdir -p $(TEST_OBJ_DIR)
 
 $(LIB_FILE): $(OBJECTS) $(MAIN_OBJECT)
