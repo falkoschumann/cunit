@@ -19,7 +19,7 @@ TESTSUITE_FILE = $(BIN_DIR)/testsuite
 CC = clang
 CXX = clang
 CFLAGS = -ansi -Wpedantic -Wall -Wextra -Werror
-LFLAGS = -lm
+LFLAGS = -lm -v
 
 # Enable debugging
 #CFLAGS += -g
