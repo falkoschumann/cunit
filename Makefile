@@ -30,7 +30,7 @@ run: compile
 	$(APP_FILE)
 
 resources:
-	cp $(HEADERS) $(LIB_FILE) README.md LICENSE.txt $(DIST_DIR)
+	cp $(HEADERS) $(LIB_FILE) README.md LICENSE.txt CHANGELOG.md $(DIST_DIR)
 
 clean:
 	rm -rf $(BUILD_DIR)
