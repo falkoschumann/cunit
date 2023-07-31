@@ -19,7 +19,7 @@ TEST_APP_FILE = $(BIN_DIR)/runtests
 CC = clang
 CXX = clang
 CFLAGS = -ansi -Wpedantic -Wall -Wextra -Werror
-LFLAGS = -lm -v
+LFLAGS = -lm
 
 # Enable debugging
 #CFLAGS += -g
