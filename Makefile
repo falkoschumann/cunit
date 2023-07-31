@@ -1,4 +1,4 @@
-VERSION = 1.0.0
+VERSION = 1.0.1
 SRC_DIR = src
 MAIN_FILE = $(SRC_DIR)/main.c
 BUILD_DIR = build

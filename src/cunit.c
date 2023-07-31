@@ -8,6 +8,7 @@
 
 #include "cunit.h"
 
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -200,12 +201,14 @@ void clear_tests(void) {
   first_testsuite = NULL;
 }
 
-void assert_implementation(int condition, const char *message, const char *file,
-                           unsigned int line) {
-  if (condition) {
-    return;
-  }
+void fail(const char *file, unsigned int line, const char *message, ...) {
+  va_list ap;
 
   assertion_failed_count++;
-  printf("    %s:%u: %s\n", file, line, message);
+
+  va_start(ap, message);
+  printf("    %s:%u: ", file, line);
+  vprintf(message, ap);
+  printf("\n");
+  va_end(ap);
 }

@@ -18,8 +18,8 @@ void test_condition_successfully(void) {
 }
 
 void test_equals_successfully(void) {
-  ASSERT_EQUALS(1, 1);
-  ASSERT_NOT_EQUALS(1, 2);
+  ASSERT_LONG_EQUALS(1, 1);
+  ASSERT_LONG_NOT_EQUALS(1, 2);
   ASSERT_DOUBLE_EQUALS(1.0, 1.05, 0.1);
   ASSERT_DOUBLE_NOT_EQUALS(1.0, 1.1, 0.1);
   ASSERT_STRING_EQUALS("foobar", "foobar");
@@ -48,8 +48,8 @@ void test_condition_failed(void) {
 void test_equals_failed(void) {
   expected_failure_count++;
 
-  ASSERT_EQUALS(1, 2);
-  ASSERT_NOT_EQUALS(1, 1);
+  ASSERT_LONG_EQUALS(1, 2);
+  ASSERT_LONG_NOT_EQUALS(1, 1);
   ASSERT_DOUBLE_EQUALS(1.0, 1.1, 0.1);
   ASSERT_DOUBLE_NOT_EQUALS(1.0, 1.05, 0.1);
   ASSERT_STRING_EQUALS("foo", "bar");

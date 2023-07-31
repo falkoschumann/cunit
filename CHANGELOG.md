@@ -8,6 +8,13 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.0.1] - 2013-07-31
+
+### Fixed
+
+-   In assertion messages, the variable name was displayed instead of the
+    variable value.
+
 ## [1.0.0] - 2013-07-31
 
 ### Added

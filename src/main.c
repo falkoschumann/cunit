@@ -16,7 +16,7 @@ void test_example(void) {
 
   c = a + b;
 
-  ASSERT_EQUALS(3, c);
+  ASSERT_LONG_EQUALS(3, c);
 }
 
 int main(void) {
