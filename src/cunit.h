@@ -44,46 +44,52 @@ void clear_tests(void);
     }                                                               \
   }
 
-#define ASSERT_TRUE(value) \
-  { ASSERT_IMPLEMENTATION((value), "expected: true but was: false", 1, 0); }
-
-#define ASSERT_FALSE(value) \
-  { ASSERT_IMPLEMENTATION(!(value), "expected: false but was: true", 0, 1); }
-
-#define ASSERT_LONG_EQUALS(expected, actual)                                \
+#define ASSERT_TRUE(value)                                                  \
   {                                                                         \
-    ASSERT_IMPLEMENTATION((expected == actual), "expected: %d but was: %d", \
-                          expected, actual);                                \
+    ASSERT_IMPLEMENTATION((value), "expected: <true> but was: <%d>", value, \
+                          NULL);                                            \
   }
 
-#define ASSERT_LONG_NOT_EQUALS(expected, actual)                            \
-  {                                                                         \
-    ASSERT_IMPLEMENTATION((expected != actual), "expected: %d but was: %d", \
-                          expected, actual);                                \
+#define ASSERT_FALSE(value)                                                   \
+  {                                                                           \
+    ASSERT_IMPLEMENTATION(!(value), "expected: <false> but was: <%d>", value, \
+                          NULL);                                              \
   }
 
-#define ASSERT_DOUBLE_EQUALS(expected, actual, delta)                    \
-  {                                                                      \
-    ASSERT_IMPLEMENTATION((fabs(expected - actual) < delta),             \
-                          "expected: %f but was: %f", expected, actual); \
+#define ASSERT_LONG_EQUALS(expected, actual)                                 \
+  {                                                                          \
+    ASSERT_IMPLEMENTATION((expected == actual),                              \
+                          "expected: <%d> but was: <%d>", expected, actual); \
   }
 
-#define ASSERT_DOUBLE_NOT_EQUALS(expected, actual, delta)                \
-  {                                                                      \
-    ASSERT_IMPLEMENTATION((fabs(expected - actual) >= delta),            \
-                          "expected: %f but was: %f", expected, actual); \
+#define ASSERT_LONG_NOT_EQUALS(expected, actual)                              \
+  {                                                                           \
+    ASSERT_IMPLEMENTATION((expected != actual),                               \
+                          "expected: not equal but was: <%d>", actual, NULL); \
   }
 
-#define ASSERT_STRING_EQUALS(expected, actual)                           \
-  {                                                                      \
-    ASSERT_IMPLEMENTATION((strcmp(expected, actual) == 0),               \
-                          "expected: %s but was: %s", expected, actual); \
+#define ASSERT_DOUBLE_EQUALS(expected, actual, delta)                        \
+  {                                                                          \
+    ASSERT_IMPLEMENTATION((fabs(expected - actual) <= delta),                \
+                          "expected: <%f> but was: <%f>", expected, actual); \
   }
 
-#define ASSERT_STRING_NOT_EQUALS(expected, actual)                       \
-  {                                                                      \
-    ASSERT_IMPLEMENTATION((strcmp(expected, actual) != 0),               \
-                          "expected: %s but was: %s", expected, actual); \
+#define ASSERT_DOUBLE_NOT_EQUALS(expected, actual, delta)                     \
+  {                                                                           \
+    ASSERT_IMPLEMENTATION((fabs(expected - actual) > delta),                  \
+                          "expected: not equal but was: <%f>", actual, NULL); \
+  }
+
+#define ASSERT_STRING_EQUALS(expected, actual)                               \
+  {                                                                          \
+    ASSERT_IMPLEMENTATION((strcmp(expected, actual) == 0),                   \
+                          "expected: <%s> but was: <%s>", expected, actual); \
+  }
+
+#define ASSERT_STRING_NOT_EQUALS(expected, actual)                            \
+  {                                                                           \
+    ASSERT_IMPLEMENTATION((strcmp(expected, actual) != 0),                    \
+                          "expected: not equal but was: <%s>", actual, NULL); \
   }
 
 #define ASSERT_NULL(value)                                       \

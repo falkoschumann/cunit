@@ -14,6 +14,7 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 -   In assertion messages, the variable name was displayed instead of the
     variable value.
+-   Fix messages of negated assertions.
 
 ## [1.0.0] - 2013-07-31
 
@@ -24,5 +25,6 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 -   Check assertions with ASSERT macros.
 -   Run tests with CI friendly output on console and return value.
 
-[unreleased]: https://github.com/falkoschumann/cunit/compare/v1.0.0...HEAD
-[0.0.1]: https://github.com/falkoschumann/cunit/releases/tag/v1.0.0
+[unreleased]: https://github.com/falkoschumann/cunit/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/falkoschumann/cunit/compare/v1.0.0...v1.0.1
+[1.0.0]: https://github.com/falkoschumann/cunit/releases/tag/v1.0.0
