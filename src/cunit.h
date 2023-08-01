@@ -92,30 +92,30 @@ void clear_tests(void);
                           "expected: not equal but was: <%s>", actual, NULL); \
   }
 
-#define ASSERT_NULL(value)                                       \
-  {                                                              \
-    ASSERT_IMPLEMENTATION((NULL == (const void *)(value)),       \
-                          "expected: null pointer", NULL, NULL); \
+#define ASSERT_NULL(value)                                                \
+  {                                                                       \
+    ASSERT_IMPLEMENTATION((NULL == (const void *)(value)),                \
+                          "expected: <null> but was: <%p>", value, NULL); \
   }
 
-#define ASSERT_NOT_NULL(value)                                       \
-  {                                                                  \
-    ASSERT_IMPLEMENTATION((NULL != (const void *)(value)),           \
-                          "expected: non null pointer", NULL, NULL); \
+#define ASSERT_NOT_NULL(value)                                 \
+  {                                                            \
+    ASSERT_IMPLEMENTATION((NULL != (const void *)(value)),     \
+                          "expected: not <null>", NULL, NULL); \
   }
 
 #define ASSERT_SAME(expected, actual)                         \
   {                                                           \
     ASSERT_IMPLEMENTATION(                                    \
         ((const void *)(expected) == (const void *)(actual)), \
-        "expected: same pointer", NULL, NULL);                \
+        "expected: <%p> but was: <%p>", expected, actual);    \
   }
 
 #define ASSERT_NOT_SAME(expected, actual)                     \
   {                                                           \
     ASSERT_IMPLEMENTATION(                                    \
         ((const void *)(expected) != (const void *)(actual)), \
-        "expected: not same pointer", NULL, NULL);            \
+        "expected: not same but was: <%p>", actual, NULL);    \
   }
 
 void fail(const char *file, unsigned int line, const char *message, ...);

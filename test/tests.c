@@ -20,6 +20,7 @@ int main(void) {
   failure_count += get_failure_count();
   clear_tests();
 
+  add_failing_suite();
   run_tests();
   failure_count += get_failure_count();
   clear_tests();
