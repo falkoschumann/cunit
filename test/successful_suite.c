@@ -39,7 +39,7 @@ static void test_pointer_successfully(void) {
 void add_successful_suite(void) {
   testsuite_t *suite;
 
-  suite = add_testsuite("Successful tests");
+  suite = add_testsuite("Successful tests", NULL, NULL);
   add_testcase(suite, "Test condition successfully",
                test_condition_successfully);
   add_testcase(suite, "Test equals successfully", test_equals_successfully);

@@ -13,6 +13,8 @@
 #include <string.h>
 
 typedef void (*test_function_t)(void);
+typedef void (*setup_function_t)(void);
+typedef void (*teardown_function_t)(void);
 
 typedef struct testcase_t {
   const char *name;
@@ -23,10 +25,13 @@ typedef struct testcase_t {
 typedef struct testsuite_t {
   const char *name;
   struct testcase_t *first_testcase;
+  setup_function_t setup;
+  teardown_function_t teardown;
   struct testsuite_t *next;
 } testsuite_t;
 
-testsuite_t *add_testsuite(const char *name);
+testsuite_t *add_testsuite(const char *name, setup_function_t setup,
+                           teardown_function_t teardown);
 
 testcase_t *add_testcase(testsuite_t *testsuite, const char *name,
                          test_function_t function);

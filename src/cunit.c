@@ -19,23 +19,30 @@ static unsigned int assertion_failed_count = 0;
 static unsigned int run_count = 0;
 static unsigned int failure_count = 0;
 
-static testsuite_t *create_testsuite(const char *name) {
-  testsuite_t *result = malloc(sizeof(testsuite_t));
+static testsuite_t *create_testsuite(const char *name, setup_function_t setup,
+                                     teardown_function_t teardown) {
+  testsuite_t *result;
+
+  result = malloc(sizeof(testsuite_t));
   if (result == NULL) {
     return NULL;
   }
 
+  /* TODO copy name and free later */
   result->name = name;
   result->first_testcase = NULL;
+  result->setup = setup;
+  result->teardown = teardown;
   result->next = NULL;
   return result;
 }
 
-testsuite_t *add_testsuite(const char *name) {
+testsuite_t *add_testsuite(const char *name, setup_function_t setup,
+                           teardown_function_t teardown) {
   struct testsuite_t *testsuite;
   struct testsuite_t *prev;
 
-  testsuite = create_testsuite(name);
+  testsuite = create_testsuite(name, setup, teardown);
   if (testsuite == NULL) {
     return NULL;
   }
@@ -53,11 +60,14 @@ testsuite_t *add_testsuite(const char *name) {
 }
 
 static testcase_t *create_testcase(const char *name, test_function_t function) {
-  testcase_t *result = malloc(sizeof(testcase_t));
+  testcase_t *result;
+
+  result = malloc(sizeof(testcase_t));
   if (result == NULL) {
     return NULL;
   }
 
+  /* TODO copy name and free later */
   result->name = name;
   result->function = function;
   result->next = NULL;
@@ -86,7 +96,7 @@ testcase_t *add_testcase(testsuite_t *testsuite, const char *name,
   return testcase;
 }
 
-static void run_testcase(testcase_t *testcase) {
+static void run_testcase(testsuite_t *testsuite, testcase_t *testcase) {
   unsigned int start_failure_count;
   clock_t start_time, end_time;
   double elapsed_time;
@@ -95,7 +105,13 @@ static void run_testcase(testcase_t *testcase) {
   printf("=== RUN   %s\n", testcase->name);
   start_failure_count = assertion_failed_count;
   run_count++;
+  if (testsuite->setup) {
+    (*testsuite->setup)();
+  }
   (*testcase->function)();
+  if (testsuite->teardown) {
+    (*testsuite->teardown)();
+  }
   end_time = clock();
   elapsed_time = (end_time - start_time) / (double)CLOCKS_PER_SEC;
   if (assertion_failed_count > start_failure_count) {
@@ -116,7 +132,7 @@ static void run_testsuite(testsuite_t *testsuite) {
   start_failure_count = assertion_failed_count;
   testcase = testsuite->first_testcase;
   while (testcase != NULL) {
-    run_testcase(testcase);
+    run_testcase(testsuite, testcase);
     testcase = testcase->next;
   }
   end_time = clock();

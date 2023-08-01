@@ -22,7 +22,7 @@ void test_example(void) {
 int main(void) {
   testsuite_t *suite;
 
-  suite = add_testsuite("Example suite");
+  suite = add_testsuite("Example suite", NULL, NULL);
   add_testcase(suite, "Example test", test_example);
   return run_tests();
 }

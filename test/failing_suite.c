@@ -46,7 +46,7 @@ void test_pointer_failed(void) {
 void add_failing_suite(void) {
   testsuite_t *suite;
 
-  suite = add_testsuite("Failing tests");
+  suite = add_testsuite("Failing tests", NULL, NULL);
   add_testcase(suite, "Test condition failed", test_condition_failed);
   add_testcase(suite, "Test equals failed", test_equals_failed);
   add_testcase(suite, "Test pointer failed", test_pointer_failed);
