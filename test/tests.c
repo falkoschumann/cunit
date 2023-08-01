@@ -16,14 +16,10 @@ int main(void) {
   int failure_count = 0;
 
   add_successful_suite();
-  run_tests();
-  failure_count += get_failure_count();
-  clear_tests();
+  failure_count += run_tests();
 
   add_failing_suite();
-  run_tests();
-  failure_count += get_failure_count();
-  clear_tests();
+  failure_count += run_tests();
 
   failure_count -= get_expected_failure_count();
   return failure_count;

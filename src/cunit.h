@@ -31,11 +31,7 @@ testsuite_t *add_testsuite(const char *name);
 testcase_t *add_testcase(testsuite_t *testsuite, const char *name,
                          test_function_t function);
 
-void run_tests(void);
-
-int get_failure_count(void);
-
-void clear_tests(void);
+int run_tests(void);
 
 #define ASSERT_IMPLEMENTATION(condition, message, expected, actual) \
   {                                                                 \

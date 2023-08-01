@@ -24,6 +24,5 @@ int main(void) {
 
   suite = add_testsuite("Example suite");
   add_testcase(suite, "Example test", test_example);
-  run_tests();
-  return get_failure_count();
+  return run_tests();
 }

@@ -144,24 +144,6 @@ static void print_summary(double run_time) {
   }
 }
 
-void run_tests(void) {
-  testsuite_t *testsuite;
-  clock_t start_time, end_time;
-  double run_time;
-
-  start_time = clock();
-  testsuite = first_testsuite;
-  while (testsuite != NULL) {
-    run_testsuite(testsuite);
-    testsuite = testsuite->next;
-  }
-  end_time = clock();
-  run_time = (end_time - start_time) / (double)CLOCKS_PER_SEC;
-  print_summary(run_time);
-}
-
-int get_failure_count(void) { return failure_count; }
-
 static void clear_testcase(testcase_t *testcase) {
   testcase_t *current_testcase, *next_testcase;
 
@@ -193,12 +175,33 @@ static void clear_testsuite(testsuite_t *testsuite) {
   }
 }
 
-void clear_tests(void) {
+static void reset(void) {
   assertion_failed_count = 0;
   run_count = 0;
   failure_count = 0;
   clear_testsuite(first_testsuite);
   first_testsuite = NULL;
+}
+
+int run_tests(void) {
+  testsuite_t *testsuite;
+  clock_t start_time, end_time;
+  double run_time;
+  unsigned int count;
+
+  start_time = clock();
+  testsuite = first_testsuite;
+  while (testsuite != NULL) {
+    run_testsuite(testsuite);
+    testsuite = testsuite->next;
+  }
+  end_time = clock();
+  run_time = (end_time - start_time) / (double)CLOCKS_PER_SEC;
+  print_summary(run_time);
+
+  count = failure_count;
+  reset();
+  return count;
 }
 
 void fail(const char *file, unsigned int line, const char *message, ...) {
