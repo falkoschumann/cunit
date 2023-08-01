@@ -8,7 +8,19 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-## [1.0.1] - 2013-07-31
+## [2.0.0] - 2023-08-01
+
+## Added
+
+-   Assert null and assert same failure message contains the pointer reference.
+-   A suite can have an optional set up and tear down function.
+
+## Changed
+
+-   Combine functions `get_failure_count` and `clear_tests` in function
+    `run_tests`.
+
+## [1.0.1] - 2023-07-31
 
 ### Fixed
 
@@ -16,7 +28,7 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     variable value.
 -   Fix messages of negated assertions.
 
-## [1.0.0] - 2013-07-31
+## [1.0.0] - 2023-07-31
 
 ### Added
 
