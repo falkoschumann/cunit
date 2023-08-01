@@ -17,13 +17,13 @@ typedef void (*setup_function_t)(void);
 typedef void (*teardown_function_t)(void);
 
 typedef struct testcase_t {
-  const char *name;
+  char *name;
   test_function_t function;
   struct testcase_t *next;
 } testcase_t;
 
 typedef struct testsuite_t {
-  const char *name;
+  char *name;
   struct testcase_t *first_testcase;
   setup_function_t setup;
   teardown_function_t teardown;

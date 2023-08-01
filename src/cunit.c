@@ -21,6 +21,7 @@ static unsigned int failure_count = 0;
 
 static testsuite_t *create_testsuite(const char *name, setup_function_t setup,
                                      teardown_function_t teardown) {
+  char *s;
   testsuite_t *result;
 
   result = malloc(sizeof(testsuite_t));
@@ -28,8 +29,8 @@ static testsuite_t *create_testsuite(const char *name, setup_function_t setup,
     return NULL;
   }
 
-  /* TODO copy name and free later */
-  result->name = name;
+  s = (char *)calloc(strlen(name) + 1, sizeof(char));
+  result->name = strcpy(s, name);
   result->first_testcase = NULL;
   result->setup = setup;
   result->teardown = teardown;
@@ -60,6 +61,7 @@ testsuite_t *add_testsuite(const char *name, setup_function_t setup,
 }
 
 static testcase_t *create_testcase(const char *name, test_function_t function) {
+  char *s;
   testcase_t *result;
 
   result = malloc(sizeof(testcase_t));
@@ -67,8 +69,8 @@ static testcase_t *create_testcase(const char *name, test_function_t function) {
     return NULL;
   }
 
-  /* TODO copy name and free later */
-  result->name = name;
+  s = (char *)calloc(strlen(name) + 1, sizeof(char));
+  result->name = strcpy(s, name);
   result->function = function;
   result->next = NULL;
   return result;
@@ -161,33 +163,39 @@ static void print_summary(double run_time) {
 }
 
 static void clear_testcase(testcase_t *testcase) {
-  testcase_t *current_testcase, *next_testcase;
+  testcase_t *current, *next;
 
   if (testcase == NULL) {
     return;
   }
 
-  current_testcase = testcase;
-  while (current_testcase != NULL) {
-    next_testcase = current_testcase->next;
-    free(current_testcase);
-    current_testcase = next_testcase;
+  current = testcase;
+  while (current != NULL) {
+    next = current->next;
+    if (current->name) {
+      free(current->name);
+    }
+    free(current);
+    current = next;
   }
 }
 
 static void clear_testsuite(testsuite_t *testsuite) {
-  testsuite_t *current_testsuite, *next_testsuite;
+  testsuite_t *current, *next;
 
   if (testsuite == NULL) {
     return;
   }
 
-  current_testsuite = testsuite;
-  while (current_testsuite != NULL) {
-    next_testsuite = current_testsuite->next;
-    clear_testcase(current_testsuite->first_testcase);
-    free(current_testsuite);
-    current_testsuite = next_testsuite;
+  current = testsuite;
+  while (current != NULL) {
+    next = current->next;
+    clear_testcase(current->first_testcase);
+    if (current->name) {
+      free(current->name);
+    }
+    free(current);
+    current = next;
   }
 }
 
