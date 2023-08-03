@@ -16,6 +16,7 @@ TEST_OBJ_DIR = $(BUILD_DIR)/test_obj
 TEST_SOURCES = $(filter-out $(TEST_MAIN_FILE), $(wildcard $(TEST_DIR)/*.c))
 TEST_OBJECTS = $(patsubst %.c,$(TEST_OBJ_DIR)/%.o,$(notdir $(TEST_SOURCES)))
 TEST_APP_FILE = $(BIN_DIR)/runtests
+TEST_COVERAGE_DIR = $(BUILD_DIR)/coverage
 CC = clang
 CXX = clang
 CFLAGS = -ansi -Wpedantic -Wall -Wextra -Werror
@@ -24,7 +25,10 @@ LFLAGS = -lm
 # Enable debugging
 #CFLAGS += -g
 
-build: compile resources test run check dist
+# Enable coverage
+TEST_CFLAGS += --coverage
+
+build: compile resources test check dist run
 
 run: compile
 	$(APP_FILE)
@@ -39,6 +43,11 @@ compile: prepare $(LIB_FILE) $(APP_FILE)
 
 test: prepare $(TEST_APP_FILE)
 	$(TEST_APP_FILE)
+ifdef TEST_CFLAGS
+	mv *.gcda *.gcno $(TEST_COVERAGE_DIR)
+	gcov -o $(TEST_COVERAGE_DIR) $(SOURCES)
+	mv *.gcov $(TEST_COVERAGE_DIR)
+endif
 
 check:
 	clang-format --dry-run -Werror --style=file --fallback-style=Google $(SRC_DIR)/* $(TEST_DIR)/*
@@ -53,13 +62,14 @@ prepare:
 	mkdir -p $(BIN_DIR)
 	mkdir -p $(OBJ_DIR)
 	mkdir -p $(TEST_OBJ_DIR)
+	mkdir -p $(TEST_COVERAGE_DIR)
 	mkdir -p $(DIST_DIR)
 
 $(LIB_FILE): $(OBJECTS)
 	ar rcs $@ $^
 
 $(APP_FILE): $(MAIN_FILE) $(LIB_FILE)
-	$(CC) $(LFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) $(LFLAGS) -o $@ $^
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -o $@ -c $<
@@ -67,8 +77,8 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CFLAGS) -o $@ -c $<
 
-$(TEST_APP_FILE): $(TEST_MAIN_FILE) $(LIB_FILE) $(TEST_OBJECTS)
-	$(CC) $(LFLAGS) -o $@ $^
+$(TEST_APP_FILE): $(TEST_MAIN_FILE) $(SOURCES) $(TEST_SOURCES)
+	$(CC) $(CFLAGS) $(TEST_CFLAGS) $(LFLAGS) -o $@ $^
 
 $(TEST_OBJ_DIR)/%.o: $(TEST_DIR)/%.c
 	$(CC) $(CFLAGS) -o $@ -c $<

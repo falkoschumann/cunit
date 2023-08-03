@@ -1,5 +1,8 @@
 # Build
 build/
 
+# Temp
+tmp/
+
 # VS Code
 .vscode/

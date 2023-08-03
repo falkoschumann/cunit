@@ -17,12 +17,10 @@ int main(void) {
   int failure_count = 0;
 
   add_successful_suite();
+  add_suite_with_setup_and_teardown();
   failure_count += run_tests();
 
   add_failing_suite();
-  failure_count += run_tests();
-
-  add_suite_with_setup_and_teardown();
   failure_count += run_tests();
 
   failure_count -= get_expected_failure_count();
