@@ -26,7 +26,7 @@ LFLAGS = -lm
 #CFLAGS += -g
 
 # Enable coverage
-TEST_CFLAGS += --coverage
+#TEST_CFLAGS += --coverage
 
 build: compile resources test check dist run
 
