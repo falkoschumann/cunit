@@ -17,8 +17,8 @@ TEST_SOURCES = $(filter-out $(TEST_MAIN_FILE), $(wildcard $(TEST_DIR)/*.c))
 TEST_OBJECTS = $(patsubst %.c,$(TEST_OBJ_DIR)/%.o,$(notdir $(TEST_SOURCES)))
 TEST_APP_FILE = $(BIN_DIR)/runtests
 TEST_COVERAGE_DIR = $(BUILD_DIR)/coverage
-CC = clang
-CXX = clang
+CC = gcc
+CXX = g++
 CFLAGS = -ansi -Wpedantic -Wall -Wextra -Werror
 LFLAGS = -lm
 
