@@ -17,8 +17,8 @@ TEST_SOURCES = $(filter-out $(TEST_MAIN_FILE), $(wildcard $(TEST_DIR)/*.c))
 TEST_OBJECTS = $(patsubst %.c,$(TEST_OBJ_DIR)/%.o,$(notdir $(TEST_SOURCES)))
 TEST_APP_FILE = $(BIN_DIR)/runtests
 TEST_COVERAGE_DIR = $(BUILD_DIR)/coverage
-CC = gcc
-CXX = g++
+CC = clang
+CXX = clang++
 CFLAGS = -ansi -Wpedantic -Wall -Wextra -Werror
 LFLAGS = -lm
 
@@ -28,20 +28,30 @@ LFLAGS = -lm
 # Enable coverage
 #TEST_CFLAGS += --coverage
 
-build: compile resources test check dist run
-
-run: compile
-	$(APP_FILE)
-
-resources:
-	cp $(HEADERS) $(LIB_FILE) README.md LICENSE.txt CHANGELOG.md $(DIST_DIR)
+build: dist
 
 clean:
 	rm -rf $(BUILD_DIR)
 
-compile: prepare $(LIB_FILE) $(APP_FILE)
+run: compile
+	$(APP_FILE)
 
-test: prepare $(TEST_APP_FILE)
+format:
+	clang-format -i --style=file --fallback-style=Google $(SRC_DIR)/* $(TEST_DIR)/*
+
+docker:
+	docker run --rm -v "$(PWD)":/usr/src/gps-correction -w /usr/src/gps-correction silkeh/clang make
+
+initialize:
+	mkdir -p $(BIN_DIR)
+	mkdir -p $(OBJ_DIR)
+	mkdir -p $(TEST_OBJ_DIR)
+	mkdir -p $(TEST_COVERAGE_DIR)
+	mkdir -p $(DIST_DIR)
+
+compile: initialize $(LIB_FILE) $(APP_FILE)
+
+test: compile $(TEST_APP_FILE)
 	$(TEST_APP_FILE)
 ifdef TEST_CFLAGS
 	mv *.gcda *.gcno $(TEST_COVERAGE_DIR)
@@ -49,21 +59,12 @@ ifdef TEST_CFLAGS
 	mv *.gcov $(TEST_COVERAGE_DIR)
 endif
 
-check:
+verify: test
 	clang-format --dry-run -Werror --style=file --fallback-style=Google $(SRC_DIR)/* $(TEST_DIR)/*
 
-format:
-	clang-format -i --style=file --fallback-style=Google $(SRC_DIR)/* $(TEST_DIR)/*
-
-dist: compile resources
+dist: verify
+	cp $(HEADERS) $(LIB_FILE) README.md LICENSE.txt CHANGELOG.md $(DIST_DIR)
 	tar czf build/cunit-$(VERSION).tar.gz --directory=$(DIST_DIR) .
-
-prepare:
-	mkdir -p $(BIN_DIR)
-	mkdir -p $(OBJ_DIR)
-	mkdir -p $(TEST_OBJ_DIR)
-	mkdir -p $(TEST_COVERAGE_DIR)
-	mkdir -p $(DIST_DIR)
 
 $(LIB_FILE): $(OBJECTS)
 	ar rcs $@ $^
