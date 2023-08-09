@@ -42,14 +42,14 @@ format:
 docker:
 	docker run --rm -v "$(PWD)":/usr/src/gps-correction -w /usr/src/gps-correction silkeh/clang make
 
-initialize:
+prepare:
 	mkdir -p $(BIN_DIR)
 	mkdir -p $(OBJ_DIR)
 	mkdir -p $(TEST_OBJ_DIR)
 	mkdir -p $(TEST_COVERAGE_DIR)
 	mkdir -p $(DIST_DIR)
 
-compile: initialize $(LIB_FILE) $(APP_FILE)
+compile: prepare $(LIB_FILE) $(APP_FILE)
 
 test: compile $(TEST_APP_FILE)
 	$(TEST_APP_FILE)
