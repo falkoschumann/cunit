@@ -42,7 +42,7 @@ format:
 	clang-format -i --style=file --fallback-style=Google $(SRC_DIR)/* $(TEST_DIR)/*
 
 docker:
-	docker run --rm -v "$(PWD)":/usr/src/gps-correction -w /usr/src/gps-correction silkeh/clang make
+	docker run --rm -v "$(PWD)":/usr/src/cunit -w /usr/src/cunit silkeh/clang make
 
 prepare:
 	mkdir -p $(BIN_DIR)
@@ -87,7 +87,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CFLAGS) -o $@ -c $<
 
-$(TEST_APP_FILE): $(TEST_MAIN_FILE) $(SOURCES) $(TEST_SOURCES)
+$(TEST_APP_FILE): $(TEST_MAIN_FILE) $(TEST_OBJECTS) $(LIB_FILE)
 	$(CC) $(CFLAGS) $(TEST_CFLAGS) $(LFLAGS) -o $@ $^
 
 $(TESTMEM_APP_FILE): $(TESTMEM_MAIN_FILE) $(LIB_FILE)
